@@ -1,5 +1,4 @@
-﻿using Superhero.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -10,25 +9,22 @@ using System.Windows.Media;
 
 namespace Superhero.Helpers
 {
-    public class EnumToColor : IValueConverter
+    class NumberToColor : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            Types t = (Types) value;
-
-            if (t == Types.bad)
+            double number = double.Parse(value.ToString());
+            if (number <= 3)
             {
-                return Brushes.LightPink;
+                return Brushes.Red;
             }
-            else if (t == Types.good)
+            else if (number <= 7)
             {
-                return Brushes.LightGreen;
+                return Brushes.Yellow;
             }
-            else
-            {
-                return Brushes.LightYellow;
+            else {
+                return Brushes.Green;
             }
-
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
