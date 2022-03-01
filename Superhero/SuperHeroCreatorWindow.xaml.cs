@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Superhero.Models;
+using Superhero.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +21,31 @@ namespace Superhero
     /// </summary>
     public partial class SuperHeroCreatorWindow : Window
     {
-        public SuperHeroCreatorWindow()
+        public SuperHeroCreatorWindow(SuperHeroMember shm)
         {
             InitializeComponent();
+            cb.Items.Add(Types.bad);
+            cb.Items.Add(Types.good);
+            cb.Items.Add(Types.neutral);
+            this.DataContext = new SuperHeroCreatorViewModel();
+            (this.DataContext as SuperHeroCreatorViewModel).Setup(shm);
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (var item in stack_editor.Children)
+            {
+                if (item is TextBox t)
+                {
+                    t.GetBindingExpression(TextBox.TextProperty).UpdateSource();
+                }
+                if (item is ComboBox c)
+                {
+                    c.GetBindingExpression(ComboBox.SelectedItemProperty).UpdateSource();
+                }
+
+                this.DialogResult = true;
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Superhero.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,17 @@ namespace Superhero.ViewModels
 {
     public class SuperHeroCreatorViewModel
     {
+        public SuperHeroMember Shm { get; set; }
+
+        public void Setup(SuperHeroMember shm)
+        {
+            Shm = shm;
+        }
+
+        public SuperHeroCreatorViewModel()
+        {
+
+        }
+
     }
 }

@@ -4,9 +4,23 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Superhero"
+        xmlns:vms="clr-namespace:Superhero.ViewModels"
         mc:Ignorable="d"
-        Title="SuperHeroCreatorWindow" Height="450" Width="800">
+        Title="SuperHeroCreatorWindow" Height="353" Width="800">
+    <Window.DataContext>
+        <vms:SuperHeroCreatorViewModel/>
+    </Window.DataContext>
     <Grid>
-        
+        <StackPanel x:Name="stack_editor">
+            <Label Content="Name" Padding="10" Background="LightBlue" />
+            <TextBox Text="{Binding Shm.Name, UpdateSourceTrigger=Explicit}"  Padding="10" />
+            <Label Content="Power" Padding="10" Background="LightBlue" />
+            <TextBox Text="{Binding Shm.Power, UpdateSourceTrigger=Explicit}"  Padding="10"/>
+            <Label Content="Speed" Padding="10" Background="LightBlue" />
+            <TextBox Text="{Binding Shm.Speed, UpdateSourceTrigger=Explicit}"  Padding="10"/>
+            <Label Content="Type" Padding="10" Background="LightBlue"/>
+            <ComboBox x:Name="cb" SelectedItem="{Binding Shm.Types, UpdateSourceTrigger=Explicit}" Padding="10"/>
+            <Button Content="Save" Padding="10" Click="Button_Click"/>
+        </StackPanel>
     </Grid>
 </Window>
