@@ -73,6 +73,9 @@ namespace Superhero.ViewModels
                 Speed = 2,
                 Types = Types.neutral
             });
+
+            //BattleGround.Add(HeadQuarter[2].GetCopy());
+            //BattleGround.Add(HeadQuarter[4].GetCopy());
         }
 
     }

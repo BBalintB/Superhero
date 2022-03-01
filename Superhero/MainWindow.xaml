@@ -4,9 +4,65 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Superhero"
+        xmlns:vms="clr-namespace:Superhero.ViewModels"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    <Window.DataContext>
+        <vms:MainWindowViewModel/>
+    </Window.DataContext>
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+        <ListBox Grid.Column="0" ItemsSource="{Binding HeadQuarter}" SelectedItem="{Binding SelectedHeroFromHeadQuarter}" HorizontalContentAlignment="Stretch">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border BorderThickness="3" BorderBrush="Black">
+                        <Grid>
 
+                            <Label  Content="{Binding Name}" FontSize="14" Grid.Column="0" Grid.Row="0" ContentStringFormat="Name: {0}"/>
+                            <Label  Content="{Binding Speed}" FontSize="14" Grid.Column="0" Grid.Row="1" ContentStringFormat="Speed: {0}"/>
+                            <Label  Content="{Binding Power}" FontSize="14" Grid.Column="1" Grid.Row="1" ContentStringFormat="Power: {0}"/>
+                            <ProgressBar Maximum="10" Height="10" Minimum="0" Margin="10" Value="{Binding Speed}" Foreground="{Binding Speed}" Grid.Column="0" Grid.Row="2" />
+                            <ProgressBar Maximum="10" Height="10" Minimum="0" Margin="10" Value="{Binding Power}" Foreground="{Binding Power}"  Grid.Column="1" Grid.Row="2" />
+                            <Label  Content="{Binding Types}" FontSize="14" Grid.Column="0" Grid.Row="3" ContentStringFormat="Type: {0}"/>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                            </Grid.RowDefinitions>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <StackPanel Grid.Column="1">
+            <Button Content="Send to Battlefield" Margin="10" Padding="5" FontSize="14"/>
+            <Button Content="Recall from Battlefield" Margin="10" Padding="5" FontSize="14"/>
+            <Button Content="Create new Superhero" Margin="10" Padding="5" FontSize="14"/>
+            <Label Content="Average Power" HorizontalAlignment="Center"/>
+            <ProgressBar Maximum="10" Height="10" Minimum="0" Margin="10" Value="10"/>
+            <Label Content="Average Speed" HorizontalAlignment="Center"/>
+            <ProgressBar Maximum="10" Height="10" Minimum="0" Margin="10" Value="10"/>
+        </StackPanel>
+        <ListBox Grid.Column="2" ItemsSource="{Binding BattleGround}" SelectedItem="{Binding SelectedHeroFromHeadQuarter}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Vertical">
+                        <Label Content="{Binding Name}" FontSize="10" />
+                        <Label Content="{Binding Power}" FontSize="10" ContentStringFormat="[{0}]"/>
+                        <Label Content="{Binding Speed}" FontSize="10" ContentStringFormat="[{0}]"/>
+                        <Label Content="{Binding Types}" FontSize="10"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </Grid>
 </Window>
