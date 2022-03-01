@@ -8,5 +8,6 @@ namespace Superhero.Logic
 {
     public class SuperHeroLogic
     {
+
     }
 }
