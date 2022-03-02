@@ -43,9 +43,8 @@ namespace Superhero
                 {
                     c.GetBindingExpression(ComboBox.SelectedItemProperty).UpdateSource();
                 }
-
-                this.DialogResult = true;
             }
+            this.DialogResult = true;
         }
     }
 }

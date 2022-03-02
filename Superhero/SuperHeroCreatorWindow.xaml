@@ -6,10 +6,7 @@
         xmlns:local="clr-namespace:Superhero"
         xmlns:vms="clr-namespace:Superhero.ViewModels"
         mc:Ignorable="d"
-        Title="SuperHeroCreatorWindow" Height="353" Width="800">
-    <Window.DataContext>
-        <vms:SuperHeroCreatorViewModel/>
-    </Window.DataContext>
+        Title="SuperHeroCreatorWindow" Height="387" Width="800">
     <Grid>
         <StackPanel x:Name="stack_editor">
             <Label Content="Name" Padding="10" Background="LightBlue" />
