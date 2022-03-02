@@ -15,7 +15,7 @@ namespace Superhero.Services
             SuperHeroMember tmp = new SuperHeroMember();
             new SuperHeroCreatorWindow(tmp).ShowDialog();
 
-            if (tmp.Name != "")
+            if (tmp.Name != null)
             {
                 return tmp;
             }
