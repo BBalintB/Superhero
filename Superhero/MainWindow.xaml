@@ -48,16 +48,24 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <StackPanel Grid.Column="1">
-            <Button Content="Send to Battlefield" Margin="10" Padding="5" FontSize="14"/>
-            <Button Content="Recall from Battlefield" Margin="10" Padding="5" FontSize="14"/>
-            <Button Content="Create new Superhero" Margin="10" Padding="5" FontSize="14"/>
-            <Label Content="Average Power" HorizontalAlignment="Center"/>
-            <ProgressBar Maximum="10" Height="10" Minimum="0" Margin="10" Value="10"/>
-            <Label Content="Average Speed" HorizontalAlignment="Center"/>
-            <ProgressBar Maximum="10" Height="10" Minimum="0" Margin="10" Value="10"/>
-        </StackPanel>
-        <ListBox Grid.Column="2" ItemsSource="{Binding BattleGround}" SelectedItem="{Binding SelectedHeroFromHeadQuarter}">
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="9*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.RowSpan="2" >
+                <Button Content="Send to Battlefield" Command="{Binding AddToBattleGroundCommand}" Margin="10" Padding="5" FontSize="12"/>
+                <Button Content="Recall from Battlefield" Command="{Binding RemoveFromBAttleGroundCommand}" Margin="10" Padding="5" FontSize="12"/>
+                <Button Content="Create new Superhero" Command="{Binding AddNewHeroCommand}" Margin="10" Padding="5" FontSize="12"/>
+                <Label Content="{Binding AVGPower}" HorizontalAlignment="Center" ContentStringFormat="Average power: {0}"/>
+                <ProgressBar Maximum="10" Height="10" Minimum="0" Margin="10" Value="{Binding AVGPower, Mode=OneWay}" Foreground="{Binding AVGPower,Mode=OneWay,Converter={StaticResource numberConverter}}"/>
+                <Label Content="{Binding AVGSpeed}" HorizontalAlignment="Center" ContentStringFormat="Average speed: {0}"/>
+                <ProgressBar Maximum="10" Height="10" Minimum="0" Margin="10" Value="{Binding AVGSpeed, Mode=OneWay}" Foreground="{Binding AVGSpeed, Mode=OneWay,Converter={StaticResource numberConverter}}"/>
+            </StackPanel>
+            <Button Grid.Row="1" Margin="10" Content="Save" Command="{Binding SaveCommand}"/>
+        </Grid>
+
+        <ListBox Grid.Column="2" ItemsSource="{Binding BattleGround}" SelectedItem="{Binding SelectedFromBattleground}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
