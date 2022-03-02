@@ -1,19 +1,25 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Input;
+using Newtonsoft.Json;
+using Superhero.Logic;
 using Superhero.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Superhero.ViewModels
 {
     public class MainWindowViewModel:ObservableRecipient
     {
-
+        ISuperHeroLogic logic;
         public ObservableCollection<SuperHeroMember> HeadQuarter { get; set; }
         public ObservableCollection<SuperHeroMember> BattleGround { get; set; }
 
@@ -26,7 +32,6 @@ namespace Superhero.ViewModels
             set { 
                 SetProperty(ref super, value);
                 (AddToBattleGroundCommand as RelayCommand).NotifyCanExecuteChanged();
-                (AddNewHeroCommand as RelayCommand).NotifyCanExecuteChanged();
             }
         }
 
@@ -46,36 +51,78 @@ namespace Superhero.ViewModels
         public ICommand AddToBattleGroundCommand { get; set; }
         public ICommand RemoveFromBAttleGroundCommand { get; set; }
         public ICommand AddNewHeroCommand { get; set; }
+        public ICommand SaveCommand { get; set; }
 
-        public MainWindowViewModel()
+        public double AVGPower
         {
+            get {
+                return logic.AVGPower;
+            }
+        }
+
+        public double AVGSpeed
+        {
+            get {
+                return logic.AVGSpeed;
+            }
+        }
+
+
+        public static bool IsInDesignMode
+        {
+            get {
+                var prop = DesignerProperties.IsInDesignModeProperty;
+                return (bool)DependencyPropertyDescriptor.FromProperty(prop, typeof(FrameworkElement)).Metadata.DefaultValue;
+            }
+        }
+        public MainWindowViewModel():this(IsInDesignMode ? null:Ioc.Default.GetService<ISuperHeroLogic>())
+        {
+
+        }
+        public MainWindowViewModel(ISuperHeroLogic logic)
+        {
+            this.logic = logic;
             HeadQuarter = new ObservableCollection<SuperHeroMember>();
             BattleGround = new ObservableCollection<SuperHeroMember>();
 
-            HeadQuarter.Add(new SuperHeroMember()
+            if (File.Exists("HQ.json"))
             {
-                Name = "Shazam",
-                Power = 8,
-                Speed = 8,
-                Types = Types.good
-            });
-            HeadQuarter.Add(new SuperHeroMember()
+                var hq = JsonConvert.DeserializeObject<SuperHeroMember[]>(File.ReadAllText("HQ.json"));
+                hq.ToList().ForEach(x => HeadQuarter.Add(x));
+            }
+            if (File.Exists("Battleground.json"))
             {
-                Name = "Dr. Doom",
-                Power = 6,
-                Speed = 4,
-                Types = Types.bad
-            });
-            HeadQuarter.Add(new SuperHeroMember()
+                var hq = JsonConvert.DeserializeObject<SuperHeroMember[]>(File.ReadAllText("Battleground.json"));
+                hq.ToList().ForEach(x => BattleGround.Add(x));
+            }
+            logic.SetupCollections(HeadQuarter, BattleGround);
+
+
+            AddToBattleGroundCommand = new RelayCommand(
+                () => logic.AddToBattleground(SelectedHeroFromHeadQuarter),
+                () => SelectedHeroFromHeadQuarter != null
+                );
+
+            RemoveFromBAttleGroundCommand = new RelayCommand(
+                () => logic.RemoveFromBattleground(SelectedFromBattleground),
+                () => SelectedFromBattleground != null
+                );
+
+            AddNewHeroCommand = new RelayCommand(
+                () => logic.CreateHero(),
+                () => true
+                );
+            SaveCommand = new RelayCommand(
+                () => logic.SaveHeros(),
+                () => true
+                );
+
+            Messenger.Register<MainWindowViewModel, string, string>(this, "Hero info", (recipient, msg) =>
             {
-                Name = "Lois Lane",
-                Power = 4,
-                Speed = 2,
-                Types = Types.neutral
+                OnPropertyChanged("AVGPower");
+                OnPropertyChanged("AVGSpeed");
             });
 
-            BattleGround.Add(HeadQuarter[1].GetCopy());
-            BattleGround.Add(HeadQuarter[2].GetCopy());
         }
 
     }
