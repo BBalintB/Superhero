@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Messaging;
+using Superhero.Logic;
+using Superhero.Services;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -20,8 +22,8 @@ namespace Superhero
         {
             Ioc.Default.ConfigureServices(
                     new ServiceCollection()
-                    //.AddSingleton<IArmyLogic, ArmyLogic>()
-                    //.AddSingleton<ITrooperEditorService, TrooperEditorViaWindow>()
+                    .AddSingleton<ISuperHeroLogic, SuperHeroLogic>()
+                    .AddSingleton<ISuperHeroCreate, SuperHeroCreatorViaWindow>()
                     .AddSingleton<IMessenger>(WeakReferenceMessenger.Default)
                     .BuildServiceProvider()
                 );
